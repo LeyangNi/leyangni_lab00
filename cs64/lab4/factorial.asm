@@ -14,6 +14,7 @@
 enter: .asciiz "Enter a number:\n"
 factorial: .asciiz "Factorial of "
 cont: .asciiz " is:\n"
+newline: .asciiz "\n"
 
 	# TODO: Write your initializations here
 
@@ -62,6 +63,11 @@ exitloop:
 	li $v0, 1
 	move $a0, $t1
 	syscall
+
+	li $v0, 4
+	la $a0, newline
+	syscall
+
 
 exit:
 	# TODO: Write code to properly exit a SPIM simulation

@@ -49,13 +49,8 @@ main:
     syscall
 
 # Exit properly!
-    li $v0, 10
-    syscall
-
-
-
-
-
 exit:
 	# Exit SPIM: Write your code here!
+	li $v0, 10
+    syscall
 

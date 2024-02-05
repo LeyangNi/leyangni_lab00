@@ -65,6 +65,10 @@ main:
 	move $a0, $t0
     syscall
 
+	li $v0, 4
+	la $a0, newline
+	syscall
+
     j exit
 
 else1:
@@ -82,6 +86,10 @@ else1:
 	move $a0, $t1
     syscall
 
+	li $v0, 4
+	la $a0, newline
+	syscall
+
     j exit
 
 max2:
@@ -92,6 +100,11 @@ max2:
     li $v0, 1
 	move $a0, $t2
     syscall
+
+	li $v0, 4
+	la $a0, newline
+	syscall
+
 
     j exit
 
