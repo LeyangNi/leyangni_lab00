@@ -20,6 +20,7 @@ expectedMyArray:
         .word 17 29 20 27 22 25 24 23 26 21 28 19
 myArray:
         .word 29 17 27 20 25 22 23 24 21 26 19 28
+myArrayLength: 	.word 12
 
 .text
 # Print everything in the array (without use of a loop)
@@ -172,7 +173,7 @@ main_failed: # Again: DO NOT CHANGE THIS CODE BLOCK!
         
 main_exit:      
 	li $v0, 10
-    syscall
+        syscall
 
         
 # COPYFROMHERE - DO ___NOT___ REMOVE THIS LINE
@@ -195,39 +196,42 @@ doSwap:
         # }
 
         # TODO: fill in the assembly code here:
+        # Let $t0 be variable x; initialize x to 0
+        li $t0, 0
 
-        li $x, 0
-        li $y, 1
-        sub $ts, $t2, 1
+        # Let $t1 be variable y; initialize y to 0
+        li $t1, 0
+
+	# Get address of myArrayLength ($t2)
+        la $t2, myArrayLength
+
+	# Get value of myArrayLength ($t3)
+        lw $t3, 0($t2) 
+        sub $t3, $t3, 1
+    
+	# Get the address of myArray (i.e. elem. 0) ($t4)
+        la $t4, myArray
 
 loop:        
-        slt $t8, $x, $ts
-        beq $t8, $zero, exit
+         
+        # RECALL: Address of array is in $t4
+        sll $t6, $t0, 2   # t6 = 4*x
+        addu $t6, $t4, $t6 # t6 = myArray + 4*x
 
-	# otherwise: read the NEXT element in array
-	# This is going to be at address + (index << 2).
-	# i.e. take index*4 as the increment
-	# (WHY index*4 ???)
-        
-        # RECALL: Address of array is in $t3
-        sll $t9, $t0, 2   # t5 = 4*x
-        addu $t9, $t0, $t9 # t5 = myArray + 4*x
+        sll $t7, $t0, 2
+        addi $t7, $t7, 4
+        addu $t7, $t4, $t7
 
-	# print out myArray[x], followed by a newline
-    li $v0, 1
-    lw $a0, 0($t5)
-    syscall
-
-    li $v0,4
-    la $a0, newline
-    syscall
+        lw $t1, 0($t7)
+        lw $t2, 0($t6)
+        sw $t1, 0($t6)
+        sw $t2, 0($t7)
 
 	# increment the index, x, by 1
-    addi $t0, $t0, 1
+        addi $t0, $t0, 2
 
-	# restart loop (jump back to loop)
-    j loop
-
+	slt $t5, $t0, $t3
+        bne $t5, $zero, loop
 
 
 finished:
